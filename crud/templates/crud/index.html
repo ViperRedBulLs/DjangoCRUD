@@ -1,0 +1,157 @@
+{% extends 'crud/base.html' %}
+{% block title %}
+    List Data
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible mt-5" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="d-flex align-items-center justify-content-between pt-3 pb-3 ps-5 pe-5 bg-info shadow mt-3" style="border-radius: .8rem;">
+            <h1 class="text-danger">List Data</h1>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalFormCreate">
+                Add Data
+            </button>
+        </div>
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-8 mt-5">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="row">Fullname</th>
+                                <th scope="row">Email</th>
+                                <th scope="row">Adress</th>
+                                <th scope="row" colspan="2">Action</th>
+                        </thead>
+                        <tbody>
+                            {% for bio in bio %}
+                                <tr>
+                                    <td>{{ bio.full_name }}</td>
+                                    <td>{{ bio.email }}</td>
+                                    <td>{{ bio.address }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-info" id="buttonUpdate"
+                                            data-pk="{{ bio.pk }}" data-fullname="{{ bio.full_name }}" data-email="{{ bio.email }}"
+                                            data-address="{{ bio.address }}">Edit</button>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'crud:delete' bio.pk %}" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CREATE DATA -->
+    <div class="modal fade" id="modalFormCreate" tabindex="-1" aria-labelledby="modalFormCreate" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFormCreateLabel">Add Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <form action="{% url 'crud:create' %}" method="post">
+                            {% csrf_token %}
+                            <div class="col-sm-12 mb-2">
+                                {{ form.full_name.label }}
+                                {{ form.full_name }}
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                {{ form.email.label }}
+                                {{ form.email }}
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                {{ form.address.label }}
+                                {{ form.address }}
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL CREATE DATA -->
+
+    <div class="modal fade" id="modalUpdateData" tabindex="-1" aria-labelledby="modalFormCreate" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalUpdateDataLabel">Add Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row justify-content-center">
+                        <form id="formUpdate" action="{% url 'crud:update' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" id="id_pk" name="pk" value="" /> 
+                            <div class="col-sm-12 mb-2">
+                                {{ form.full_name.label }}
+                                {{ form.full_name }}
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                {{ form.email.label }}
+                                {{ form.email }}
+                            </div>
+                            <div class="col-sm-12 mb-2">
+                                {{ form.address.label }}
+                                {{ form.address }}
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(function() {
+        let pk = "";
+        let fullname = ""
+        let email = ""
+        let address = ""
+        $("*#buttonUpdate").click(function() {
+            pk = $(this).data("pk");
+            fullname = $(this).data("fullname");
+            email = $(this).data("email");
+            address = $(this).data("address");
+            $("#modalUpdateData").modal("show");
+        });
+        $("#modalUpdateData").on("shown.bs.modal", function(event) {
+            $("#modalUpdateData #formUpdate #id_pk").val(pk);
+            $("#modalUpdateData #formUpdate #id_full_name").focus();
+            $("#modalUpdateData #formUpdate #id_full_name").val(fullname);
+            $("#modalUpdateData #formUpdate #id_email").val(email);
+            $("#modalUpdateData #formUpdate #id_address").val(address);
+        })
+        $("#modalUpdateData").on("hidden.bs.modal", function(event) {
+            $("#modalUpdateData #formUpdate #id_pk").val("");
+            $("#modalUpdateData #formUpdate #id_full_name").val("");
+            $("#modalUpdateData #formUpdate #id_email").val("");
+            $("#modalUpdateData #formUpdate #id_address").val("");
+        })
+    });
+</script>
+{% endblock script %}
