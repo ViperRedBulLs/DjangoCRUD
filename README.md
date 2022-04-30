@@ -1,5 +1,7 @@
 # Django CRUD
-Create Read Update Delete Database(CRUD). With using [Python Django Framework](https://djangoproject.com)
+Create Read Update Delete Database(CRUD). With using [Python Django Framework](https://djangoproject.com).
+
+This application has been designed with a simple and good User Interface using [Bootstrap 5](https://getbootstrap.com) and [jQuery](https://jquery.com) which enhances the appearance of the web
 
 ## Download and Install
 To download and install you must install requirement first.
@@ -38,3 +40,7 @@ python manage.py runserver
 ```
 
 And server will be run on http://127.0.0.0:8000
+
+## Screenshot the app
+Initial view of this application
+<img src="https://github.com/ViperRedBulLs/DjangoCRUD/blob/main/Screenshot_2022-05-01-04-18-29-81.jpg">
