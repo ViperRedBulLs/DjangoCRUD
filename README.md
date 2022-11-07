@@ -44,3 +44,5 @@ And server will be run on http://127.0.0.0:8000
 ## Screenshot the app
 Initial view of this application
 <img src="https://github.com/ViperRedBulLs/DjangoCRUD/blob/main/Screenshot_2022-05-01-04-18-29-81.jpg">
+
+## Thanks
